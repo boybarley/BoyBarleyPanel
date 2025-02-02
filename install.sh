@@ -48,6 +48,6 @@ sudo certbot --nginx -d $DOMAIN --non-interactive --agree-tos --email admin@$DOM
 
 echo -e "\n${YELLOW}===========================================${NC}"
 echo -e "${GREEN}Installation Complete!${NC}"
-echo -e "Access your panel: https://$DOMAIN"
+echo -e "Access your panel: https://$SERVER_IP"
 echo -e "Username: ${ADMIN_USER}"
 echo -e "${YELLOW}===========================================${NC}"
