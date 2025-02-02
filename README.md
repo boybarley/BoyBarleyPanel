@@ -23,6 +23,6 @@ A lightweight yet powerful VPS control panel.
 
 ### Quick Install
 ```bash
-wget -O install.sh https://raw.githubusercontent.com/yourusername/BoyBarleyPanel/main/installer/install.sh
+wget -O install.sh https://raw.githubusercontent.com/boybarley/BoyBarleyPanel/main/installer/install.sh
 chmod +x install.sh
 ./install.sh
