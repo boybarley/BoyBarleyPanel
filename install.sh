@@ -10,7 +10,8 @@ NC='\033[0m'
 echo -e "${YELLOW}=== BoyBarleyPanel Installation ===${NC}"
 
 # User Input
-read -p "Enter your domain name (e.g panel.yourdomain.com): " DOMAIN
+read -p "Enter your server IP address: " SERVER_IP
+DOMAIN=$SERVER_IP
 read -p "Create admin username: " ADMIN_USER
 read -s -p "Create admin password: " ADMIN_PASS
 echo
