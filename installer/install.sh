@@ -13,7 +13,7 @@ apt-get update
 apt-get install -y nginx php-fpm php-mysql mysql-server
 
 # Clone repository
-git clone https://github.com/yourusername/BoyBarleyPanel.git /var/www/boybarleypanel
+git clone https://github.com/boybarley/BoyBarleyPanel.git /var/www/boybarleypanel
 
 # Set permissions
 chown -R www-data:www-data /var/www/boybarleypanel
