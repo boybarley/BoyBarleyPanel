@@ -1,22 +1,30 @@
-from flask import Flask, render_template, request
-import subprocess
+from flask import Flask, render_template, redirect, url_for
+import docker
 
 app = Flask(__name__)
+client = docker.from_env()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    containers = client.containers.list()
+    return render_template('index.html', containers=containers)
 
-@app.route('/update_app', methods=['POST'])
-def update_app():
+@app.route('/deploy')
+def deploy():
     try:
-        # Pull the latest changes from the main branch
-        subprocess.run(['git', 'pull', 'origin', 'main'], check=True)
-        # Restart the Flask application service
-        subprocess.run(['sudo', 'systemctl', 'restart', 'boybarleypanel.service'], check=True)
-        return "Application updated successfully."
-    except subprocess.CalledProcessError as e:
-        return f"Error updating application: {e}"
+        # Hentikan semua container yang menjalankan image 'boybarleypanel'
+        for container in client.containers.list(filters={"ancestor": "boybarleypanel"}):
+            container.stop()
+
+        # Bangun ulang image
+        client.images.build(path='.', tag='boybarleypanel')
+
+        # Jalankan container baru
+        client.containers.run('boybarleypanel', detach=True, ports={'5000/tcp': 5000})
+
+        return redirect(url_for('index'))
+    except Exception as e:
+        return f"Deployment Error: {str(e)}"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
