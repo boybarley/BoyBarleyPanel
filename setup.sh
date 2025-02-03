@@ -1,20 +1,23 @@
 #!/bin/bash
 
-# Update and install necessary packages
+# Perbarui dan instal paket yang diperlukan
 sudo apt update
 sudo apt install -y python3 python3-venv python3-pip
 
-# Navigate to the project directory
+# Pindah ke direktori proyek (direktori tempat skrip ini berada)
 cd "$(dirname "$0")"
 
-# Create a virtual environment
+# Membuat virtual environment
 python3 -m venv venv
 
-# Activate the virtual environment
+# Mengaktifkan virtual environment
 source venv/bin/activate
 
-# Install dependencies
+# Memasang dependencies dari requirements.txt
 pip install -r requirements.txt
 
-# Run the Flask app in the background
+# Set environment variable FLASK_APP agar flask tahu aplikasi mana yang dijalankan
+export FLASK_APP=app.py
+
+# Jalankan aplikasi Flask di latar belakang
 nohup flask run --host=0.0.0.0 --port=5000 &
