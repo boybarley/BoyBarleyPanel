@@ -31,7 +31,7 @@ sudo ufw --force enable
 # Create App Directory
 echo -e "${GREEN}[4/5] Setting up application...${NC}"
 git clone https://github.com/boybarley/BoyBarleyPanel.git
-cd BoyBarleypanel
+cd BoyBarleyPanel
 python3 -m venv venv
 source venv/bin/activate
 
