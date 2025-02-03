@@ -7,8 +7,13 @@ sudo apt upgrade -y
 # Install necessary packages
 sudo apt install -y python3 python3-venv python3-pip git
 
-# Clone the project repository
-git clone https://your-repository-url/BoyBarleyPanel.git /opt/BoyBarleyPanel
+# Prompt for the repository URL if not defined
+if [ -z "$REPO_URL" ]; then
+  read -p "Enter your repository URL: " REPO_URL
+fi
+
+# Clone the project repository into /opt
+sudo git clone $REPO_URL /opt/BoyBarleyPanel
 
 # Navigate to the project directory
 cd /opt/BoyBarleyPanel
@@ -23,7 +28,7 @@ pip install -r requirements.txt
 # Prompt for the username to run the service
 read -p "Enter the username to run BoyBarleyPanel service: " username
 
-# Create a copy of the service file with the entered username
+# Create a systemd service file with the entered username
 cat <<EOL | sudo tee /etc/systemd/system/boybarleypanel.service
 [Unit]
 Description=BoyBarleyPanel Flask Application
@@ -33,11 +38,14 @@ After=network.target
 User=$username
 WorkingDirectory=/opt/BoyBarleyPanel
 Environment="PATH=/opt/BoyBarleyPanel/venv/bin"
-ExecStart=/opt/BoyBarleyPanel/venv/bin/flask run --host=0.0.0.0
+ExecStart=/opt/BoyBarleyPanel/venv/bin/flask run --host=0.0.0.0 --port=5000
 
 [Install]
 WantedBy=multi-user.target
 EOL
+
+# Ensure the WorkingDirectory owner is correct
+sudo chown -R $username:$username /opt/BoyBarleyPanel
 
 # Reload the systemd daemon to recognize the new service
 sudo systemctl daemon-reload
