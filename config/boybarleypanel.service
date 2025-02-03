@@ -6,8 +6,8 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/path/to/BoyBarleypanel
-Environment="PATH=/path/to/BoyBarleypanel/venv/bin"
-ExecStart=/path/to/BoyBarleypanel/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 app:app
+Environment="PATH=/path/to/BoyBarleyPanel/venv/bin"
+ExecStart=/path/to/BoyBarleyPanel/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 app:app
 
 [Install]
 WantedBy=multi-user.target
