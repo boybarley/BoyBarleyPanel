@@ -1,57 +1,42 @@
 #!/bin/bash
 
-# Update and upgrade the system
-sudo apt update
-sudo apt upgrade -y
+# Pastikan skrip dihentikan jika ada error
+set -e
 
-# Install necessary packages
-sudo apt install -y python3 python3-venv python3-pip git
+# Fungsi untuk memeriksa apakah sebuah perintah tersedia
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
 
-# Prompt for the repository URL if not defined
-if [ -z "$REPO_URL" ]; then
-  read -p "Enter your repository URL: " REPO_URL
+# Periksa dan instal Docker jika belum tersedia
+if ! command_exists docker; then
+    echo "Docker tidak ditemukan. Menginstal Docker..."
+    sudo apt-get update
+    sudo apt-get install \
+        ca-certificates \
+        curl \
+        gnupg \
+        lsb-release -y
+
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+else
+    echo "Docker sudah terinstal."
 fi
 
-# Clone the project repository into /opt
-sudo git clone $REPO_URL /opt/BoyBarleyPanel
+# Bangun Docker image
+echo "Membangun Docker image untuk aplikasi..."
+docker build -t boybarleypanel .
 
-# Navigate to the project directory
-cd /opt/BoyBarleyPanel
+# Jalankan container
+echo "Menjalankan container Docker untuk aplikasi..."
+docker run -d -p 5000:5000 --name boybarleypanel boybarleypanel
 
-# Set up the virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Prompt for the username to run the service
-read -p "Enter the username to run BoyBarleyPanel service: " username
-
-# Create a systemd service file with the entered username
-cat <<EOL | sudo tee /etc/systemd/system/boybarleypanel.service
-[Unit]
-Description=BoyBarleyPanel Flask Application
-After=network.target
-
-[Service]
-User=$username
-WorkingDirectory=/opt/BoyBarleyPanel
-Environment="PATH=/opt/BoyBarleyPanel/venv/bin"
-ExecStart=/opt/BoyBarleyPanel/venv/bin/flask run --host=0.0.0.0 --port=5000
-
-[Install]
-WantedBy=multi-user.target
-EOL
-
-# Ensure the WorkingDirectory owner is correct
-sudo chown -R $username:$username /opt/BoyBarleyPanel
-
-# Reload the systemd daemon to recognize the new service
-sudo systemctl daemon-reload
-
-# Start and enable the BoyBarleyPanel service
-sudo systemctl start boybarleypanel.service
-sudo systemctl enable boybarleypanel.service
-
-echo "BoyBarleyPanel installation and setup complete."
+echo "Aplikasi berjalan di container Docker. Akses melalui http://<server-ip>:5000"
