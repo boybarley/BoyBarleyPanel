@@ -1,3 +1,4 @@
+
 # BoyBarleyPanel
 
 ![Panel Screenshot](screenshot.png)
@@ -15,6 +16,6 @@ Modern VPS Control Panel with essential server management features.
 ## Installation
 ```bash
 git clone https://github.com/boybarley/BoyBarleyPanel.git
-cd BoyBarleypanel
+cd BoyBarleyPanel
 chmod +x install.sh
 ./install.sh
