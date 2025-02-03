@@ -2,19 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - BoyBarleyPanel</title>
+    <title>BoyBarleyPanel Management</title>
 </head>
 <body>
-    <h1>BoyBarleyPanel Dashboard</h1>
-
-    <!-- Button to update the application -->
-    <form method="post" action="/update_app">
-        <button type="submit">Update Application</button>
+    <h1>BoyBarleyPanel Containers</h1>
+    <ul>
+    {% for container in containers %}
+        <li>{{ container.name }} - {{ container.status }} ({{ container.image.tags[0] }})</li>
+    {% endfor %}
+    </ul>
+    <form action="{{ url_for('deploy') }}" method="get">
+        <button type="submit">Deploy/Update Application</button>
     </form>
-
-    <!-- Links to manage other server tasks -->
-    <a href="/setup">Setup Server</a>
-    <a href="/service">Service Management</a>
 </body>
 </html>
