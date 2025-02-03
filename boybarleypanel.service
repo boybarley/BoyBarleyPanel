@@ -1,0 +1,12 @@
+[Unit]
+Description=BoyBarleyPanel Flask Application
+After=network.target
+
+[Service]
+User=your-username
+WorkingDirectory=/opt/BoyBarleyPanel
+Environment="PATH=/opt/BoyBarleyPanel/venv/bin"
+ExecStart=/opt/BoyBarleyPanel/venv/bin/flask run --host=0.0.0.0
+
+[Install]
+WantedBy=multi-user.target
