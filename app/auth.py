@@ -29,7 +29,7 @@ def create_user(username, password):
     return True
 
 def verify_user(username, password):
-    conn = sqlite3.connect('boybarleypanel.db')
+    conn = sqlite3.connect('boybarleyPanel.db')
     c = conn.cursor()
     c.execute("SELECT password FROM users WHERE username=?", (username,))
     result = c.fetchone()
