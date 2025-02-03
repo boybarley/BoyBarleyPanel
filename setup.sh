@@ -1,20 +1,33 @@
 #!/bin/bash
 
-# Update and install necessary packages
+# Update and upgrade the system
 sudo apt update
-sudo apt install -y python3 python3-venv python3-pip
+sudo apt upgrade -y
+
+# Install necessary packages
+sudo apt install -y python3 python3-venv python3-pip git
+
+# Clone the project repository
+git clone https://your-repository-url/BoyBarleyPanel.git /opt/BoyBarleyPanel
 
 # Navigate to the project directory
-cd "$(dirname "$0")"
+cd /opt/BoyBarleyPanel
 
-# Create a virtual environment
+# Set up the virtual environment
 python3 -m venv venv
-
-# Activate the virtual environment
 source venv/bin/activate
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 
-# Run the Flask app in the background
-nohup flask run --host=0.0.0.0 --port=5000 &
+# Create systemd service file
+sudo cp boybarleypanel.service /etc/systemd/system/
+
+# Reload the systemd daemon to recognize the new service
+sudo systemctl daemon-reload
+
+# Start and enable the BoyBarleyPanel service
+sudo systemctl start boybarleypanel.service
+sudo systemctl enable boybarleypanel.service
+
+echo "BoyBarleyPanel installation and setup complete."
