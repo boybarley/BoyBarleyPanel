@@ -1,0 +1,12 @@
+database:
+  engine: postgresql
+  host: localhost
+  port: 5432
+  name: panel_prod
+  user: panel_admin
+
+security:
+  jwt_expiration: 3 # hours
+  password_policy:
+    min_length: 8
+    require_special_char: true
