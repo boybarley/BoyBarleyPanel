@@ -9,7 +9,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 echo "Installing Python packages..."
-pip install -r requirements.txt
+pip install -r /path/ke/BoyBarleyPanel/requirements.txt
 
 echo "Setting up database..."
 flask db init
