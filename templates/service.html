@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Management - BoyBarleyPanel</title>
+</head>
+<body>
+    <h1>Service Management</h1>
+    <form method="post" action="/service">
+        <label for="service_name">Service Name:</label>
+        <input type="text" id="service_name" name="service_name" required>
+        <label for="action">Action:</label>
+        <select id="action" name="action">
+            <option value="start">Start</option>
+            <option value="stop">Stop</option>
+            <option value="restart">Restart</option>
+            <option value="status">Status</option>
+        </select>
+        <button type="submit">Execute</button>
+    </form>
+</body>
+</html>
