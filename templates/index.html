@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BoyBarleyPanel</title>
+    <title>Dashboard - BoyBarleyPanel</title>
 </head>
 <body>
-    <h1>BoyBarleyPanel</h1>
-    <form method="post" action="/command">
-        <label for="command">Enter Command:</label>
-        <input type="text" id="command" name="command" autocomplete="off">
-        <button type="submit">Execute</button>
+    <h1>BoyBarleyPanel Dashboard</h1>
+
+    <!-- Button to update the application -->
+    <form method="post" action="/update_app">
+        <button type="submit">Update Application</button>
     </form>
-    {% if result %}
-    <h3>Output:</h3>
-    <pre>{{ result }}</pre>
-    {% endif %}
+
+    <!-- Links to manage other server tasks -->
+    <a href="/setup">Setup Server</a>
+    <a href="/service">Service Management</a>
 </body>
 </html>
