@@ -20,8 +20,24 @@ source venv/bin/activate
 # Install Python dependencies
 pip install -r requirements.txt
 
-# Create systemd service file
-sudo cp boybarleypanel.service /etc/systemd/system/
+# Prompt for the username to run the service
+read -p "Enter the username to run BoyBarleyPanel service: " username
+
+# Create a copy of the service file with the entered username
+cat <<EOL | sudo tee /etc/systemd/system/boybarleypanel.service
+[Unit]
+Description=BoyBarleyPanel Flask Application
+After=network.target
+
+[Service]
+User=$username
+WorkingDirectory=/opt/BoyBarleyPanel
+Environment="PATH=/opt/BoyBarleyPanel/venv/bin"
+ExecStart=/opt/BoyBarleyPanel/venv/bin/flask run --host=0.0.0.0
+
+[Install]
+WantedBy=multi-user.target
+EOL
 
 # Reload the systemd daemon to recognize the new service
 sudo systemctl daemon-reload
